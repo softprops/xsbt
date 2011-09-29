@@ -93,7 +93,7 @@ trait Parsers
 	/** @return a list of strings delimited by a single quote (') character */
 	def singleQuoteDelimited: String => Parser[Seq[String]] = delimitedStrings(SingleQuote, NotSingleQuote)_
 	/** Strings are delimeted by the backtick (`) character by default */
-	def defaultDelimited(display:String): Parser[Seq[String]] = doubleQuoteDelimited(display)
+	def defaultDelimited(display:String): Parser[Seq[String]] = backTickDelimited(display)
 
 	def flag[T](p: Parser[T]): Parser[Boolean] = (p ^^^ true) ?? false
 
