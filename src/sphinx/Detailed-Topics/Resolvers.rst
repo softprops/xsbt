@@ -2,17 +2,49 @@
 Resolvers
 =========
 
+Overview
+--------
+
+Resolvers are URI's used for resolving the locations of remote library dependencies and targets for publishing artifacts. Resolvers in sbt come in many flavors. This section helps outline the most common flavors and how to use them in your project.
+
+Sbt defines many utilities for building typed resolvers that represent the different kinds of resolvers sbt supports. In practice, you will only need to use a few common ones provided by the ``Opts.resolver`` object. Below you will learn about those as well as how to define your own.
+
+Resolver Build Settings
+-----------------
+
+The most common build settings that use resolvers are ``publish-to`` and ``resolvers``. You can find out more about those settings using the ``help`` command and inspect their values in your build with the ``show`` command.
+
 Maven
 -----
 
 Resolvers for Maven2 repositories are added as follows:
 
-``scala resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"``
-This is the most common kind of user-defined resolvers. The rest of this
+``scala resolvers += Some(Opts.resolver.sonatypeSnapshots)
+
+This is the most common kind of user-defined resolver. The rest of this
 page describes how to define other types of repositories.
+
+
+Opts.resolver
+-------------
+
+Opts.resolver is an object that provides commonly used resolvers as constants.
+
+- ``Opts.resolver.sonatypeReleases`` For publishing snapshots to the sonatype OSS repository
+- ``Opts.resolver.sonatypeSnapshots`` For publishing release versions to the sonatype OSS repository
+- ``Opts.resolver.sonatypeStaging`` For publishing to Maven-style artifacts to the sonatype OSS repository
+- ``Opts.resolver.mavenLocalFile`` For publishing to your systems local Maven repository
 
 Predefined
 ----------
+
+The Opts.resolver object defined constants are implemented using resolver builders with predefined resolver respositories.
+
+For instance, Opts.resolver.sonatypeReleases is defined using ``Resolver.sonatypeRepo("releases")``, which in turn is defined using
+
+::
+
+    def sonatypeRepo(status: String) = new MavenRepository("sonatype-" + status, SonatypeRepositoryRoot + "/" + status)
 
 A few predefined repositories are available and are listed below
 
